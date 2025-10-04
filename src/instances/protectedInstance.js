@@ -2,7 +2,7 @@ import axios from "axios";
 import store from "../redux/store";
 import { clearUser } from "../redux/authSlice";
 
-const baseURL = "http://localhost:3001/api/v1";
+const baseURL = "https://job-portal-backend-83iz.onrender.com/api/v1";
 
 const protectedInstance = axios.create({
     baseURL,
