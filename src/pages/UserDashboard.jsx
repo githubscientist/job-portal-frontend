@@ -1,6 +1,10 @@
+import Navbar from "../components/Navbar";
+
 const UserDashboard = () => {
     return (
-        <div>UserDashboard</div>
+        <div>
+            <Navbar />
+        </div>
     )
 }
 

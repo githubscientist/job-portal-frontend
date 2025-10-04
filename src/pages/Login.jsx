@@ -2,6 +2,8 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router";
 import { toast } from "react-toastify";
 import { loginUser } from "../services/authServices";
+import { useDispatch } from "react-redux";
+import { setUser } from "../redux/authSlice";
 
 const Login = () => {
 
@@ -11,12 +13,14 @@ const Login = () => {
     });
 
     const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     const handleLogin = async (e) => {
         e.preventDefault();
 
         try {
             const response = await loginUser(formData);
+            dispatch(setUser(response.user));
             toast.success(response.message);
 
             if (response.user.role === 'admin') {
