@@ -10,15 +10,37 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Provider } from "react-redux";
 import store from "./redux/store";
+import { adminLoader, recruiterLoader, userLoader } from "./loaders/roleLoaders";
+import authLoader from "./loaders/authLoader";
 
 const routes = [
   {
     path: "/",
-    element: <Home />
+    element: <Home />,
+    loader: async () => {
+      try {
+        return await authLoader();
+      } catch (error) {
+        return null; // Allow non-authenticated users to view home page
+      }
+    },
+    hydrateFallbackElement: <div className="flex items-center justify-center min-h-screen">
+      <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+    </div>
   },
   {
-    path: "/jobs/:id",
-    element: <JobDetails />
+    path: "/job/:jobId",
+    element: <JobDetails />,
+    loader: async () => {
+      try {
+        return await authLoader();
+      } catch (error) {
+        return null; // Allow non-authenticated users to view job details
+      }
+    },
+    hydrateFallbackElement: <div className="flex items-center justify-center min-h-screen">
+      <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+    </div>
   },
   {
     path: "/register",
@@ -30,15 +52,27 @@ const routes = [
   },
   {
     path: "/dashboard",
-    element: <UserDashboard />
+    element: <UserDashboard />,
+    loader: userLoader,
+    hydrateFallbackElement: <div className="flex items-center justify-center min-h-screen">
+      <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+    </div>
   },
   {
     path: "/recruiter/dashboard",
-    element: <RecruiterDashboard />
+    element: <RecruiterDashboard />,
+    loader: recruiterLoader,
+    hydrateFallbackElement: <div className="flex items-center justify-center min-h-screen">
+      <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+    </div>
   },
   {
     path: "/admin/dashboard",
-    element: <AdminDashboard />
+    element: <AdminDashboard />,
+    loader: adminLoader,
+    hydrateFallbackElement: <div className="flex items-center justify-center min-h-screen">
+      <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+    </div>
   }
 ]
 

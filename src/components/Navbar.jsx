@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { toast } from "react-toastify";
 import { logoutUser } from "../services/authServices";
 import { clearUser } from "../redux/authSlice";
@@ -7,14 +7,20 @@ import { clearUser } from "../redux/authSlice";
 const Navbar = () => {
     const { isAuthenticated, user } = useSelector(state => state.auth);
     const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     const handleLogout = async () => {
         try {
             await logoutUser();
             dispatch(clearUser());
             toast.success("Logged out successfully");
+            // Redirect to login page after logout
+            navigate('/login', { replace: true });
         } catch (error) {
-            toast.error("Logout failed");
+            // Even if logout API fails, clear the user state and redirect
+            dispatch(clearUser());
+            toast.success("Logged out successfully");
+            navigate('/login', { replace: true });
         }
     }
 
